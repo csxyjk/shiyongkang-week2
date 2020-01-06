@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bw.dao.CompanyMapper">
+	<select id="findAll" resultType="com.bw.entity.Company">
+		select * from company
+		<where>
+			<if test="kname!=null and kname != ''">
+				keyname like concat('%',#{kname},'%')
+			</if>
+			<if test="cdetail !=null and cdetail !=''">
+				and detail like concat('%',#{cdetail},'%')
+			</if>
+			<if test="cname !=null and cname !=''">
+				and cname like concat('%',#{cname},'%')
+			</if>
+			<if test="caddress !=null and caddress !=''">
+				and caddress =#{caddress}
+			</if>
+			<if test="beginSale !=null and beginSale !=''">
+				and sales >=#{beginSale}
+			</if>
+			<if test="endSale !=null and endSale !=''">
+				and sales &lt;=#{endSale}
+			</if>
+			<if test="beginTime !=null and beginTime !=''">
+				and ctime >=#{beginTime}
+			</if>
+			<if test="endTime !=null and endTime !=''">
+				and ctime &lt;=#{endTime}
+			</if>
+
+		</where>
+	</select>
+
+	<insert id="insert">
+		insert into company values
+		<foreach collection="list" item="c" separator=",">
+			(#{c.cid},#{c.keyname},#{c.detail},#{c.cname},#{c.product},#{c.sales},#{c.ctime},null,#{c.csaying},#{c.cstatus},#{c.caddress})
+		</foreach>
+	</insert>
+</mapper>
